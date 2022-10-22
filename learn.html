@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<head>
+    <title>Learn</title>
+    <!--Stylesheet below is NOT my work. 
+        Credit:
+            https://codepen.io/ig_design/pen/MWKVrNR
+            https://freefrontend.com/css-dropdown-menus/
+    -->
+    <link rel="stylesheet" href="dropdown.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="learn.css">
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+</head>
+<body>
+    <!--<img src="hot.png" id="hot"/>-->
+    <div id="select" class="gbox">
+        <div class="sec-center">
+            <div id="emu">Enable Emulation</div>
+            <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
+            <label class="for-dropdown" for="dropdown">Select Level<i class="uil uil-arrow-down"></i></label>
+            <div class="section-dropdown"> 
+                <a href="javascript:level(1)">1: Common Bigrams<i class="uil uil-arrow-right"></i></a>
+                <a href="javascript:level(2)">2: Common Trigrams<i class="uil uil-arrow-right"></i></a>
+                <a href="javascript:level(3)">3: Common Quadrigrams<i class="uil uil-arrow-right"></i></a>
+                <a href="javascript:level(4)">4: Common Pentagrams<i class="uil uil-arrow-right"></i></a>
+                <a href="javascript:level(5)">5: ALTERNATE FINGERS<i class="uil uil-arrow-right"></i></a>
+                <a href="javascript:level(6)">6: ALTING PRACTICE<i class="uil uil-arrow-right"></i></a>
+                <a href="javascript:level(7)">7: Common Words<i class="uil uil-arrow-right"></i></a>
+                <a href="javascript:level(8)">8: monkeytype.com Practice<i class="uil uil-arrow-right"></i></a>
+                <a href="javascript:level(9)">9: 10fastfingers.com Practice<i class="uil uil-arrow-right"></i></a>
+                <!--<input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
+                <label class="for-dropdown-sub" for="dropdown-sub">Dropdown Sub <i class="uil uil-plus"></i></label>
+                <div class="section-dropdown-sub"> 
+                    <a href="#">Dropdown Link <i class="uil uil-arrow-right"></i></a>
+                    <a href="#">Dropdown Link <i class="uil uil-arrow-right"></i></a>
+                </div>-->
+            </div>
+            <div id="desc">Temporary</div>
+        </div>
+    </div>
+    <div class="tips">HELLO</div>
+    <div class="words">
+        <div id="w1"><span>asdf</span></div>
+        <div id="w2"></div>
+        <div id="w3"></div>
+    </div>
+    <div class="gbox" id="kb">
+        <div class="r1"><ltr id="v">V</ltr><ltr id="l">L</ltr><ltr id="h">H</ltr><ltr id="d">D</ltr><ltr id="q">Q</ltr><ltr id="z">Z</ltr><ltr id="w">W</ltr><ltr id="o">O</ltr><ltr id="u">U</ltr><ltr class="comma 80" id=",.">,</ltr><ltr id="Shift">Shift</ltr></div>
+        <br>
+        <div class="r2"><p>&nbsp;&nbsp;&nbsp;&nbsp;</p><ltr id="s">S</ltr><ltr id="r">R</ltr><ltr id="n">N</ltr><ltr id="t">T</ltr><ltr id="g">G</ltr><ltr id="f">F</ltr><ltr id="y">Y</ltr><ltr id="a">A</ltr><ltr id="e">E</ltr><ltr id="i">I</ltr><ltr class="dash 222" id="-_">-</ltr></div>
+        <br>
+        <div class="r3"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><ltr id="x">X</ltr><ltr id="j">J</ltr><ltr id="b">B</ltr><ltr id="m">M</ltr><ltr id="k">K</ltr><ltr id="c">C</ltr><ltr id="p">P</ltr><ltr class="quotations 188" id='&apos;&quot;'>'</ltr><ltr class="colon 190" id=";:">;</ltr><ltr class="mark 191" id="?!">?</ltr></div>
+    </div>
+    <script>
+        box = document.getElementById("dropdown")
+        box.addEventListener('keydown',(function(e){
+            var kc = e.keyCode
+            if (kc === 32){
+                e.preventDefault();
+            }
+        }));
+    </script>
+    <script>
+        w1 = null
+        w2 = null
+        w3 = null
+        kb = null
+        tips = null
+        rs = [81,87,69,82,84,89,85,73,79,65,83,68,70,71,72,74,75,76,186,90,88,67,86,66,78,77]
+        emulating = false
+        toggle = document.getElementById("emu")
+        /*
+        vlhdqzwou
+        srntgfyaei
+        xjbmkcp
+        */
+        ks = ['v', 'l', 'h', 'd', 'q', 'z', 'w', 'o', 'u', 's', 'r', 'n', 't', 'g', 'f', 'y', 'a', 'e', 'i', 'x', 'j', 'b', 'm', 'k', 'c', 'p']
+        window.addEventListener('load',function(){
+            w1 = document.getElementById("w1")
+            w2 = document.getElementById("w2")
+            w3 = document.getElementById("w3")
+            kb = document.getElementById("kb")
+            kb = kb.getElementsByTagName("ltr")
+            toggle = document.getElementById("emu")
+            tips = document.getElementsByClassName('tips')[0]
+            if(localStorage.lvl==null){
+                localStorage.lvl = 1
+            }
+            if(localStorage.idx1==null){
+                localStorage.idx1 = 0
+                localStorage.randomize1 = "no"
+            }
+            if(localStorage.idx2==null){
+                localStorage.idx2 = 0
+                localStorage.randomize2 = "no"
+            }
+            level(parseInt(localStorage.lvl))
+        })
+        toggle.addEventListener('click',function(){
+            if(toggle.classList.contains("on")){
+                toggle.innerText = "Enable Emulation"
+                toggle.classList.remove("on")
+                emulating = false
+            }else{
+                toggle.innerText = "Emulating Layout"
+                toggle.classList.add("on")
+                emulating = true
+            }
+        })
+        /*
+        CREDITS FOR LISTS BELOW:
+        https://docs.google.com/document/d/1_a5Nzbkwyk1o0bvTctZrtgsee9jSP-6I0q3A0_9Mzm0/
+        https://www3.nd.edu/~busiforc/handouts/cryptography/Letter%20Frequencies.html
+        http://norvig.com/mayzner.html
+        https://www.summerboardingcourses.com/blogs/500-most-common-words-in-english/
+        https://monkeytype.com
+        */
+        l1 = ['th', 'he', 'in', 'er', 'an', 're', 'on', 'at', 'en', 'nd', 'ti', 'es', 'or', 'te', 'of', 'ed', 'is', 'it', 'al', 'ar', 'st', 'to', 'nt', 'ng', 'se', 'ha', 'as', 'ou', 'io', 'le', 've', 'co', 'me', 'de', 'hi', 'ri', 'ro', 'ic', 'ne', 'ea', 'ra', 'ce', 'li', 'ch', 'll', 'be', 'ma', 'si', 'om', 'ur', 'ss', 'ee']
+        l2 = ['the', 'and', 'ing', 'ion', 'tio', 'ent', 'ati', 'for', 'her', 'ter', 'hat', 'tha', 'ere', 'ate', 'his', 'con', 'res', 'ver', 'all', 'ons', 'nce', 'men', 'ith', 'ted', 'ers', 'pro', 'thi', 'wit', 'are', 'ess', 'not', 'ive', 'was', 'ect', 'rea', 'com', 'eve', 'per', 'int', 'est', 'sta', 'cti', 'ica', 'ist', 'ear', 'ain', 'one', 'our', 'iti', 'rat']
+        l3 = ['that', 'ther', 'with', 'tion', 'here', 'ould', 'have', 'hich', 'whic', 'this', 'thin', 'they', 'atio', 'ever', 'from', 'ough', 'were', 'hing', 'ment']
+        l4 = ['ation','tions','which','ction','other','there','ition','ement','inter','ional','ratio','would','tiona','these','state','natio','thing','under','ssion','ectio','catio','latio','about','count','ments','ative','prese','feren','hough','ution','roduc','resen','rough','press','first','after','cause','where','tatio','could','efore','contr','hould','shoul','tical','gener','esent','great']
+        l5 = ["rl","ue","k","yp","ao","oa","bl","ght","cy","bv","gth","tb","cya","fy","gm","nh","lr","br","nb","eu"]
+        a1 = [["r","L3 (Left Middle)"],
+        ["u","R3 (Right Middle) OR Flatten finger down OR Slide downward"],
+        ["k","R2 (Right Index) if faster/easier depending on the word"],
+        ["yp","Flatten finger down OR Slide downward [Can Skip]"],
+        ["o","R2 (Right Index)"],
+        ["oa","Flatten finger down OR Slide downward [Can Skip]"],
+        ["b","L2 (Left Index)"],
+        ["g","R2 (Right Index)"],
+        ["y","R3 (Right Middle)"],
+        ["b","L2 (Left Index)"],
+        ["g","R2 (Right Index)"],
+        ["tb","Flatten finger down OR Slide downward [Can Skip]"],
+        ["ya","R3 (Right Middle) AND R3 (Right Ring)"],
+        ["y","R3 (Right Middle)"],
+        ["gm","Flatten finger down OR Slide downward [Can Skip]"],
+        ["n","L2 (Left Index)"],
+        ["r","L3 (Left Middle) BUT Sliding downward or Flattening may be easier"],
+        ["b","L2 (Left Index)"],
+        ["b","L2 (Left Index)"],
+        ["u","R3 (Right Middle)"]] 
+        l6 = ['giRL','peaRL','unfuRL','cuRL','swiRL','huRL','deaRLy','daRLing','twiRL','undeRLine','woRLd']
+        a2 = []
+        a2 = a2.concat("rl ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['clUE','trUE','cUE','dUE','hUE','fUEl','qUEry','venUE','crUEl','issUE','rescUE','qUEen','argUE','virtUE','qUEstion'])
+        a2 = a2.concat("ue ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['marK','larK','kind','sharK','darK','starK','barK','sKirt','KinK','ranKed'])
+        a2 = a2.concat("k ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['tYPe','hYPe','skYPe','gYPsy','tYPo','hYPo','hYPer','crYPt','hYPhae','hYPno','glYPh'])
+        a2 = a2.concat("yp ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['chAOs','AOrta','bAObab','karAOke'])
+        a2 = a2.concat("ao ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['OAk','cOAt','mOAt','bOAt','hOArd','tOAd','flOAt','mOAn','fOAm','cocOA','rOAd'])
+        a2 = a2.concat("oa ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['BLack','BLand','BLare','BLazer','BLoom','BLurry','BLame','faBLe','taBLet','feeBLe'])
+        a2 = a2.concat("bl ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['aiGHT','liGHT','miGHT','riGHT','tiGHT','heiGHT','siGHT'])
+        a2 = a2.concat("ght ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['CYcle','iCY','aCYl','CYst','sCYthe','spiCY','juiCY','CYsaki','CYber','CYnic','CYnthia'])
+        a2 = a2.concat("cy ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['oBVious','suBVert'])
+        a2 = a2.concat("bv ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['lenGTH','strenGTH'])
+        a2 = a2.concat("gth ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['TBh','TBf','tiTBit','ouTBid'])
+        a2 = a2.concat("tb ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['CYA','CYAn','CYAnide'])
+        a2 = a2.concat("cya ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['gooFY','leaFY','veriFY','satisFY','FYi','deFYing'])
+        a2 = a2.concat("fy ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['GM','GMail','siGMa','doGMa','maGMa'])
+        a2 = a2.concat("gm ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['iNHale','unholy','iNHumane','iNHibit','uNHinged'])
+        a2 = a2.concat("nh ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['alr','aLRight','aLReady','rivaLRy','chivaLRy','raiLRoad'])
+        a2 = a2.concat("lr ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['BRight','celeBRate','BRonze','BRead','BRing','BRanch','BRoom'])
+        a2 = a2.concat("br ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['iNBred','uNBan','uNBent','uNBox','suNBird','raiNBow','uNBiased'])
+        a2 = a2.concat("nb ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l6 = l6.concat(['EUphoria','EUro','EUthanasia','EUphemize'])
+        a2 = a2.concat("eu ".repeat(l6.length-a2.length).split(" "))
+        a2.pop()
+        l7 = ['a','about','act','actually','add','after','again','against','age','ago','air','all','also','always','am','among','an','and','animal','another','answer','appear','are','area','as','ask','at','back','ball','base','be','beauty','because','become','bed','been','before','began','begin','behind','best','better','better','between','big','bird','black','blue','boat','body','book','both','bottom','box','boy','bring','brought','build','built','busy','but','by','call','came','can','car','care','carefully','carry','centre','certain','change','check','child','children','city','class','clear','close','cold','colour','come','common','community','complete','contain','could','country','course','create','cried','cross','cry','cut','dark','day','decide','decided','deep','develop','did','different','do','does','dog','door','down','draw','dream','drive','dry','during','each','early','earth','east','easy','eat','effort','enough','every','example','experience','explain','eye','face','fact','false','family','far','farm','fast','father','feel','feet','few','field','find','fire','first','fish','five','fly','follow','food','form','found','four','friend','from','front','full','game','gave','get','girl','give','go','gold','good','got','government','great','green','ground','group','grow','guy','had','half','hand','happen','happened','hard','has','have','he','hear','heat','heavy','help','her','here','high','his','hold','home','horse','horn','hot','hour','house','idea','if','important','in','inch','include','into','is','island','it','just','keep','kind','king','knew','know','known','kurumi','land','language','large','last','late','later','laugh','lead','learn','leave','left','less','less','let','letter','life','light','like','line','list','listen','little','live','long','look','love','low','machine','made','make','man','many','map','mark','may','mean','measure','men','might','mile','million','mind','minute','miss','money','month','moon','more','more','morning','most','mother','mountain','move','much','music','must','my','name','nation','near','need','never','new','next','night','no','north','note','notice','noun','now','number','object','of','off','office','often','oh','oil','old','on','once','one','only','open','or','order','other','our','out','over','page','pair','part','pass','passed','people','perhaps','person','picture','place','plan','plane','plant','play','point','power','probably','problem','product','provide','pull','put','question','quick','rain','ran','reach','read','ready','real','receive','record','red','relationship','remember','right','river','road','rock','room','round','rule','run','said','same','saw','say','school','science','sea','season','second','see','seem','self','sentence','serve','set','several','shape','she','ship','short','should','show','shown','side','simple','since','sing','sit','six','size','sleep','slow','small','snow','so','some','something','song','soon','sound','south','space','special','spell','spring','stand','star','start','stay','step','stood','stop','story','street','strong','study','such','summer','sun','system','table','take','talk','teach','tell','ten','test','than','that','the','their','them','then','there','these','they','thing','think','this','those','though','thought','thousand','three','through','time','to','together','told','too','took','top','toward','town','travel','tree','try','true','turn','two','under','understand','until','up','upon','us','use','usual','very','voice','vowel','wait','walk','want','war','warm','was','watch','water','wave','way','we','week','weight','were','west','what','wheel','where','which','white','who','why','will','wind','winter','with','without','woman','wonder','wood','word','words','work','world','would','write','wrong','year','yes','you','young']
+        l8 = ["the","be","of","and","a","to","in","he","have","it","that","for","they","with","as","not","on","she","at","by","this","we","you","do","but","from","or","which","one","would","all","will","there","say","who","make","when","can","more","if","no","man","out","other","so","what","time","up","go","about","than","into","could","state","only","new","year","some","take","come","these","know","see","use","get","like","then","first","any","work","now","may","such","give","over","think","most","even","find","day","also","after","way","many","must","look","before","great","back","through","long","where","much","should","well","people","down","own","just","because","good","each","those","feel","seem","how","high","too","place","little","world","very","still","nation","hand","old","life","tell","write","become","here","show","house","both","between","need","mean","call","develop","under","last","right","move","thing","general","school","never","same","another","begin","while","number","part","turn","real","leave","might","want","point","form","off","child","few","small","since","against","ask","late","home","interest","large","person","end","open","public","follow","during","present","without","again","hold","govern","around","possible","head","consider","word","program","problem","however","lead","system","set","order","eye","plan","run","keep","face","fact","group","play","stand","increase","early","course","change","help","line"]
+        l9 = ["about","above","add","after","again","air","all","almost","along","also","always","an","and","animal","another","answer","any","are","around","as","ask","at","away","back","be","because","been","before","began","begin","being","below","between","big","book","both","boy","but","by","call","came","can","car","carry","change","children","city","close","come","could","country","cut","day","did","different","do","does","don't","down","each","earth","eat","end","enough","even","every","example","eye","face","family","far","father","feet","few","find","first","follow","food","for","form","found","four","from","get","girl","give","go","good","got","great","group","grow","had","hand","hard","has","have","he","head","hear","help","her","here","high","him","his","home","house","how","idea","if","important","in","into","is","it","its","it's","just","keep","kind","know","land","large","last","later","learn","leave","left","let","letter","life","light","like","line","list","little","live","long","look","made","make","man","many","may","me","mean","men","might","mile","miss","more","most","mother","mountain","move","much","must","my","name","near","need","never","new","next","night","no","not","now","number","of","off","often","oil","old","on","once","one","only","open","or","other","our","out","over","own","page","paper","part","people","picture","place","plant","play","point","put","question","quick","quickly","quite","read","really","right","river","run","said","same","saw","say","school","sea","second","see","seem","sentence","set","she","should","show","side","small","so","some","something","sometimes","song","soon","sound","spell","start","state","still","stop","story","study","such","take","talk","tell","than","that","the","their","them","then","there","these","they","thing","think","this","those","thought","three","through","time","to","together","too","took","tree","try","turn","two","under","until","up","us","use","very","walk","want","was","watch","water","way","we","well","went","were","what","when","where","which","while","white","who","why","will","with","without","word","work","world","would","write","year","you","young","your"]
+        l10 = ["BLUE","qUEen","brick","schoolgiRL","cowgiRL","unapprOAchaBLe","radiOActive","sugarcOAt","conseqUEnce","qUEUEd",]
+        a3 = [["B: L2, UE: Slide/Flatten"],
+        ["UE: Slide/Flatten OR U: R3"],
+        ["Don't alt BR"],
+        ["Regular alt"],
+        ["Regular alt"],
+        ["Regular alts"],
+        ["Regular alt"],
+        ["Regular alt"],
+        ["Regular alt"],
+        ["UE: Avoid sliding, try pressing together (flatten) OR U: R3"]]
+        //l9 = ['I want to.','Yes, can you?','How are you?','Where are you?','How to make','How to do','Do it yourself.',"Sorry, I can't.","Can't you do","There's a thing","Where were you?","By the way","Okay, thank you.","Do your work.","Can you please","That is so","There's no way!"]
+        function generate(x){
+            localStorage.lvl = x
+            gen=false
+            for(var i=0; i<kb.length; i++){
+                if(kb[i].classList.contains("next")){
+                    kb[i].classList.remove("next")
+                }
+            }
+            window[active].classList.remove("active")
+            switch(parseInt(x)){
+                case 1:
+                    temp = Math.floor(Math.random()*100)%l1.length
+                    w1.classList.add("active")
+                    w1.innerHTML = "<span>"+l1[temp][0]+"</span><span>"+l1[temp][1]+"</span>"
+                    /*prev = document.getElementsByClassName("next")
+                    prev.classList.remove("next")*/
+                    kb[l1[temp][0]].className = "next"
+                    w2.innerHTML = "<span>"+l1[temp][0]+"</span><span>"+l1[temp][1]+"</span>"
+                    w3.innerHTML = "<span>"+l1[temp][0]+"</span><span>"+l1[temp][1]+"</span>"
+                    break;
+                case 2:
+                    temp = Math.floor(Math.random()*100)%l2.length
+                    w1.classList.add("active")
+                    w1.innerHTML = "<span>"+l2[temp][0]+"</span><span>"+l2[temp][1]+"</span><span>"+l2[temp][2]+"</span>"
+                    /*prev = document.getElementsByClassName("next")
+                    prev.classList.remove("next")*/
+                    kb[l2[temp][0]].className = "next"
+                    w2.innerHTML = "<span>"+l2[temp][0]+"</span><span>"+l2[temp][1]+"</span><span>"+l2[temp][2]+"</span>"
+                    w3.innerHTML = "<span>"+l2[temp][0]+"</span><span>"+l2[temp][1]+"</span><span>"+l2[temp][2]+"</span>"
+                    break;
+                case 3:
+                    temp = Math.floor(Math.random()*100)%l3.length
+                    w1.classList.add("active")
+                    w1.innerHTML = "<span>"+l3[temp][0]+"</span><span>"+l3[temp][1]+"</span><span>"+l3[temp][2]+"</span><span>"+l3[temp][3]+"</span>"
+                    /*prev = document.getElementsByClassName("next")
+                    prev.classList.remove("next")*/
+                    kb[l3[temp][0]].className = "next"
+                    w2.innerHTML = "<span>"+l3[temp][0]+"</span><span>"+l3[temp][1]+"</span><span>"+l3[temp][2]+"</span><span>"+l3[temp][3]+"</span>"
+                    w3.innerHTML = "<span>"+l3[temp][0]+"</span><span>"+l3[temp][1]+"</span><span>"+l3[temp][2]+"</span><span>"+l3[temp][3]+"</span>"
+                    break;
+                case 4:
+                	temp = Math.floor(Math.random()*100)%l4.length
+                	w1.classList.add("active")
+                	w1.innerHTML = "<span>"+l4[temp][0]+"</span>"
+                	w2.innerHTML = "<span>"+l4[temp][0]+"</span>"
+                	w3.innerHTML = "<span>"+l4[temp][0]+"</span>"
+                	for(var i=1; i<5; i++){
+		        	w1.innerHTML += "<span>"+l4[temp][i]+"</span>"
+		        	w2.innerHTML += "<span>"+l4[temp][i]+"</span>"
+		        	w3.innerHTML += "<span>"+l4[temp][i]+"</span>"
+                	}
+                    kb[l4[temp][0]].className = "next"
+                	break;
+                case 5:
+                	temp = Math.floor(Math.random()*100)%l5.length
+                    if(localStorage.randomize1=="no"){
+                        temp = parseInt(localStorage.idx1)
+                    }
+                	w1.classList.add("active")
+                	w1.innerHTML = "<span>"+l5[temp][0]+"</span>"
+                	w2.innerHTML = "<span>"+l5[temp][0]+"</span>"
+                	w3.innerHTML = "<span>"+l5[temp][0]+"</span>"
+                	for(var i=1; i<l5[temp].length; i++){
+		        	w1.innerHTML += "<span>"+l5[temp][i]+"</span>"
+		        	w2.innerHTML += "<span>"+l5[temp][i]+"</span>"
+		        	w3.innerHTML += "<span>"+l5[temp][i]+"</span>"
+                	}
+                    tips.innerHTML = "<span id='let'>"+a1[temp][0].toUpperCase()+"</span>: "+a1[temp][1]
+                    kb[l5[temp][0]].className = "next"
+                	break;
+                case 6:
+                	temp = Math.floor(Math.random()*200)%l6.length
+                    if(localStorage.randomize2=="no"){
+                        temp = parseInt(localStorage.idx2)
+                    }
+                	w1.classList.add("active")
+                	w1.innerHTML = ""
+                	w2.innerHTML = ""
+                	w3.innerHTML = ""
+                	for(var i=0; i<l6[temp].length; i++){
+                        if(l6[temp][i]==l6[temp][i].toLowerCase()){
+                            w1.innerHTML += "<span>"+l6[temp][i]+"</span>"
+                            w2.innerHTML += "<span>"+l6[temp][i]+"</span>"
+                            w3.innerHTML += "<span>"+l6[temp][i]+"</span>"
+                        }else{
+                            w1.innerHTML += "<span class='alt'>"+l6[temp][i].toLowerCase()+"</span>"
+                            w2.innerHTML += "<span class='alt'>"+l6[temp][i].toLowerCase()+"</span>"
+                            w3.innerHTML += "<span class='alt'>"+l6[temp][i].toLowerCase()+"</span>"
+                        }
+                	}
+                    tips.innerHTML = localStorage.idx2+"/"+l6.length
+                    kb[l6[temp][0].toLowerCase()].className = "next"
+                	break;
+                case 7:
+                    if(l7.indexOf(w1.innerText)==209 || l7.indexOf(w1.innerText)==199){
+                        temp = l7.indexOf(w1.innerText)-10
+                    }else if(l7.indexOf(w1.innerText)==15){
+                        temp = 450
+                    }else{
+                	    temp = Math.floor(Math.random()*727)%l7.length
+                    }
+                	w1.classList.add("active")
+                	w1.innerHTML = "<span>"+l7[temp][0]+"</span>"
+                	w2.innerHTML = "<span>"+l7[temp][0]+"</span>"
+                	w3.innerHTML = "<span>"+l7[temp][0]+"</span>"
+                	for(var i=1; i<l7[temp].length; i++){
+		        	w1.innerHTML += "<span>"+l7[temp][i]+"</span>"
+		        	w2.innerHTML += "<span>"+l7[temp][i]+"</span>"
+		        	w3.innerHTML += "<span>"+l7[temp][i]+"</span>"
+                	}
+                    kb[l7[temp][0]].className = "next"
+                	break;
+                case 8:
+                	temp = Math.floor(Math.random()*1000)%l8.length
+                	w1.classList.add("active")
+                	w1.innerHTML = "<span>"+l8[temp][0]+"</span>"
+                	w2.innerHTML = "<span>"+l8[temp][0]+"</span>"
+                	w3.innerHTML = "<span>"+l8[temp][0]+"</span>"
+                	for(var i=1; i<l8[temp].length; i++){
+		        	w1.innerHTML += "<span>"+l8[temp][i]+"</span>"
+		        	w2.innerHTML += "<span>"+l8[temp][i]+"</span>"
+		        	w3.innerHTML += "<span>"+l8[temp][i]+"</span>"
+                	}
+                    kb[l8[temp][0]].className = "next"
+                	break;
+                case 9:
+                	temp = Math.floor(Math.random()*1000)%l9.length
+                	w1.classList.add("active")
+                	w1.innerHTML = "<span>"+l9[temp][0]+"</span>"
+                	w2.innerHTML = "<span>"+l9[temp][0]+"</span>"
+                	w3.innerHTML = "<span>"+l9[temp][0]+"</span>"
+                	for(var i=1; i<l9[temp].length; i++){
+		        	w1.innerHTML += "<span>"+l9[temp][i]+"</span>"
+		        	w2.innerHTML += "<span>"+l9[temp][i]+"</span>"
+		        	w3.innerHTML += "<span>"+l9[temp][i]+"</span>"
+                	}
+                    kb[l9[temp][0]].className = "next"
+                	break;
+            }
+            active = "w1"
+        }
+        last=""
+        gen = false
+        space = false
+        active = "w1"
+        window.addEventListener('keydown',function(k){
+            if(!k.repeat){
+                if(space){
+                    if(k.which==32){
+                        dones = window[active].getElementsByClassName("done")
+                        fullheight = document.getElementsByTagName("html")[0].offsetWidth
+                        window[active].classList.remove("active")
+                        if(active=="w1"){
+                            active="w2"
+                            if(fullheight < w2.offsetWidth + w2.offsetLeft){
+                                w1.hidden = true
+                            }
+                        }else if(active=="w2"){
+                            active="w3"
+                            if(fullheight < w3.offsetWidth + w3.offsetLeft){
+                                w1.hidden = true
+                                w2.hidden = true
+                            }
+                        }else{
+                            active="w1"
+                            w1.hidden = false
+                            w2.hidden = false
+                            w3.hidden = false
+                            for(var i=0; i<dones.length; i++){
+                                dones[i].classList.remove("done")
+                            }
+                            if(parseInt(localStorage.lvl)==5){
+                                if(localStorage.randomize1=="no"){
+                                    localStorage.idx1 = parseInt(localStorage.idx1)+1
+                                }
+                                if(parseInt(localStorage.idx1)==l5.length){
+                                    localStorage.randomize1 = "yes"
+                                }
+                            }
+                            if(parseInt(localStorage.lvl)==6){
+                                if(localStorage.randomize2=="no"){
+                                    localStorage.idx2 = parseInt(localStorage.idx2)+1
+                                }
+                                if(parseInt(localStorage.idx2)==l6.length){
+                                    localStorage.randomize2 = "yes"
+                                }
+                            }
+                            generate(localStorage.lvl)
+                        }
+                        window[active].classList.add("active")
+                        ch = window[active].getElementsByTagName("span")[0].innerText
+                        kb[ch].classList.add("next")
+                    }
+                }
+                if(!space){
+                    if(emulating){
+                        n=ks[rs.indexOf((k.which))]
+                    }
+                    curr = document.getElementsByClassName("next")[0]
+                    intxt = curr.innerText
+                    if(!shift){
+                        intxt = intxt.toLowerCase()
+                    }
+                    spans = window[active].getElementsByTagName("span")
+                    dones = window[active].getElementsByClassName("done")
+                    if((k.key==intxt && emulating==false) || (n==intxt&&emulating==true)){
+                        curr.classList.remove("next")
+                        if(spans.length>dones.length+1){
+                            newtxt = spans[dones.length+1].innerText.toLowerCase()
+                            kb[newtxt].classList.add("next")
+                        }else{
+                            space = true
+                        }
+                        spans[dones.length].classList.add("done")
+                    }else{
+                        if(k.key!="Shift"){
+                            spans[dones.length].id = "err"
+                        }
+                    }
+                }
+                if(space && k.which==32){
+                    space = false
+                }
+            }
+        })
+        /*
+        window.addEventListener('keydown',function(k){
+            if(!k.repeat){
+                if(k.which==32 && space){
+                    for(var i=0; i<kb.length; i++){
+                        if(kb[i].classList.contains("next")){
+                            kb[i].classList.remove("next")
+                        }
+                    }
+                    console.log("yes")
+                    space = false
+                    n = document.getElementsByClassName("active")[0]
+                    if(n.id=="w1"){
+                        w2.classList.add("active")
+                    }else if(n.id=="w2"){
+                        w3.classList.add("active")
+                    }else{
+                        generate(localStorage.lvl)
+                    }
+                    n.classList.remove("active") 
+                    h = document.getElementsByClassName("active")[0].getElementsByTagName("span")[0].innerText
+                    kb[h].classList.add("next") 
+                }
+                perv = document.getElementsByClassName("next")
+                ids = []
+                for(var i=0; i<perv.length; i++){
+                    ids.push(perv[i].id)
+                }
+                prev = perv[0]
+                if(prev.id.length==1){
+                    a = document.getElementsByClassName("active")[0].getElementsByTagName("span")
+                    y = a
+                    b = null
+                    for(var i=0; i<a.length; i++){
+                        if(a[i].id!="done"){
+                            if(i>=a.length-1 && ids.includes(k.key.toLowerCase())){
+                                //document.getElementsByClassName("active")[0].classList.remove("active")
+                                space = true
+                                /*
+                                if(a.id=="w1"){
+                                    document.getElementById("w2").classList.add("active")
+                                    b = document.getElementsByClassName("active")[0].getElementsByTagName("span")[0]
+                                }else if(a.id=="w2"){
+                                    document.getElementById("w3").classList.add("active")
+                                    b = document.getElementsByClassName("active")[0].getElementsByTagName("span")[0]
+                                }else{
+                                }
+                                *//*
+                            }else{
+                                console.log(document.getElementsByClassName("active")[0],i+1,i,a.length-1)
+                                b = document.getElementsByClassName("active")[0].getElementsByTagName("span")[i+1]
+                                if(b){
+                                    b=b.innerText
+                                }
+                            }
+                            a=a[i]
+                            break
+                        }
+                    }
+                    if(k.key.toLowerCase()==prev.id){
+                        a.id="done"
+                        a.classList.add("done")
+                        if(b!=null){
+                            kb[b].classList.add("next")
+                        }
+                    }else if(k.which!=32){
+                        a.id="err"
+                    }
+                    if(space){
+                        for(var j=0; j<y.length; j++){
+                            y[j].classList.add("done")
+                            console.log(y[j])
+                        }
+                    }
+                }
+            }
+        })
+        window.addEventListener('keyup',function(k){
+            prev = document.getElementsByClassName("next")
+            chk = document.getElementsByClassName("done")
+            if(chk[0] != null && prev.length>1){
+                chk = chk[chk.length-1].innerHTML
+                for(var i=0; i<prev.length; i++){
+                    if(prev[i].innerText.toLowerCase()==chk){
+                        prev = prev[i]
+                    }
+                }
+            }else if(prev.length==1){
+                x = w1.getElementsByClassName("done")
+                if(x.length==w1.length){
+                    prev[0].classList.reemove("next")
+                }
+            }
+            if(k.key.toLowerCase()==prev.id){
+                prev.classList.remove("next")
+            }
+            if(space && prev[0]){
+                prev[0].classList.remove("next")
+            }
+            kb[k.key].classList.remove("next")
+        })
+        */
+        function level(x){
+            d = document.getElementById("desc")
+            s = ""
+            switch(x){
+                case 1:
+                    s = "L1: Common 2 letter combinations ("+l1.length.toString()+")"
+                    break;
+                case 2:
+                    s = "L2: Common 3 letter combinations ("+l2.length.toString()+")"
+                    break;
+                case 3:
+                    s = "L3: Common 4 letter combinations ("+l3.length.toString()+")"
+                    break;
+                case 4:
+                	s = "L4: Common 4 letter combinations ("+l4.length.toString()+")"
+                	break;
+                case 5:
+                	s = "L5: Common ALT combinations ("+l5.length.toString()+")"
+                	break;
+                case 6:
+                	s = "L6: Practice ALTING ("+l6.length.toString()+")"
+                	break;
+                case 7:
+                	s = "L7: Common words ("+l7.length.toString()+")"
+                	break;
+                case 8:
+                	s = "L8: monkeytype.com Practice ("+l8.length.toString()+")"
+                	break;
+                case 9:
+                	s = "L9: 10fastfingers.com Practice ("+l9.length.toString()+")"
+                	break;
+            }
+            if(x==5 || x==6){
+                tips.hidden = false
+                if(x==6 && localStorage.randomize2=="yes"){
+                    tips.hidden = true
+                }
+            }else{
+                tips.hidden = true
+            }
+            d.innerText = s
+            generate(x)
+        }
+        /*box = null
+        function add(){
+            b1 = document.getElementsByClassName("r1")[0]
+            b2 = document.getElementsByClassName("r2")[0]
+            b3 = document.getElementsByClassName("r3")[0]
+            var r1 = "vlhdqzwou,"
+            var r2 = "srntgfyaei"
+            var r3 = "xjbmkcp"
+            for(var i=0; i<r1.length; i++){
+                b1.innerHTML+="<ltr id="+r1[i]+">"+r1[i].toUpperCase()+"</ltr>"
+            }
+            for(var i=0; i<r2.length; i++){
+                b2.innerHTML+="<ltr id="+r2[i]+">"+r2[i].toUpperCase()+"</ltr>"
+            }
+            for(var i=0; i<r3.length; i++){
+                b3.innerHTML+="<ltr id="+r3[i]+">"+r3[i].toUpperCase()+"</ltr>"
+            }
+        }
+        window.addEventListener('load', add);*/
+        var shift = false
+        var keys = []
+        var up = []
+        var exc = [186,222,188,190,191]
+        function highlight(){
+            for(var i=0; i<keys.length; i++){
+                x = document.getElementById(keys[i])
+                if(x==null){
+                    x = document.getElementsByClassName(keys[i])[0]
+                }
+                x.classList.add("on")
+            }
+            for(var i=0; i<up.length; i++){
+                x = document.getElementById(up[i])
+                if(x==null){
+                    x = document.getElementsByClassName(up[i])[0]
+                }
+                x.classList.remove("on")
+            }
+            if(keys.length>10){
+                keys=[]
+            }
+            if(shift){
+                x = document.getElementById("Shift")
+                x.classList.add("on")
+                for(var i=1; i<exc.length; i++){
+                    y = document.getElementsByClassName(exc[i])[0]
+                    y.innerText = y.id[1]
+                }
+                y = document.getElementsByClassName("comma")[0]
+                y.innerText = y.id[1]
+            }else{
+                x = document.getElementById("Shift")
+                x.classList.remove("on")
+                for(var i=1; i<exc.length; i++){
+                    y = document.getElementsByClassName(exc[i])[0]
+                    y.innerText = y.id[0]
+                }
+                y = document.getElementsByClassName("comma")[0]
+                y.innerText = y.id[0]
+            }
+            up = []
+        }
+        window.addEventListener('keydown',function(shh){
+            if(64<shh.which && shh.which<91){
+                if(shh.which == 80){
+                    if(keys[keys.length-1]!="comma"){
+                        keys.push("comma")
+                    }
+                }else{
+                    if(keys[keys.length-1]!=shh.key.toLowerCase()){
+                        keys.push(shh.key.toLowerCase())
+                    }
+                }
+                highlight()
+            }else if(exc.includes(shh.which)){
+                if(!['i','dash','quotations','colon','mark'].includes(keys[keys.length-1])){
+                    switch(shh.which){
+                        case 186:
+                            keys.push("i");
+                            break;
+                        case 222:
+                            keys.push("dash");
+                            break;
+                        case 188:
+                            keys.push("quotations")
+                            break;
+                        case 190:
+                            keys.push("colon")
+                            break;
+                        case 191:
+                            keys.push("mark")
+                            break;
+                    }
+                }
+                highlight()
+            }else if(shh.key=="Shift" && keys[keys.length-1]!="Shift"){
+                shift = true
+                highlight()
+            }
+        })
+        window.addEventListener('keyup',function(k){
+            if(shift && k.key == "Shift"){
+                shift = false
+            }else{
+                if(64<k.which && k.which<91){
+                    if(k.which == 80){
+                        keys.splice(keys.indexOf("comma"),1)
+                        up.push("comma")
+                    }else if(keys.indexOf(k.key.toLowerCase())>=0){
+                        keys.splice(keys.indexOf(k.key.toLowerCase()),1)
+                        up.push(k.key.toLowerCase())
+                    }
+                }else if(exc.includes(k.which)){
+                    switch(k.which){
+                        case 186:
+                            keys.splice(keys.indexOf("i"),1)
+                            up.push("i")
+                            break;
+                        case 222:
+                            keys.splice(keys.indexOf("dash"),1)
+                            up.push("dash")
+                            break;
+                        case 188:
+                            keys.splice(keys.indexOf("quotations"),1)
+                            up.push("quotations")
+                            break;
+                        case 190:
+                            keys.splice(keys.indexOf("colon"),1)
+                            up.push("colon")
+                            break;
+                        case 191:
+                            keys.splice(keys.indexOf("mark"),1)
+                            up.push("mark")
+                            break;
+                    }
+                    highlight()
+                }
+            }
+            highlight()
+        })
+    </script>
+</body>
+</html>

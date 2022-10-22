@@ -1,0 +1,276 @@
+#hot {
+    animation: hot 1s forwards
+}
+
+@keyframes hot {
+    from {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0
+    }
+}
+
+ltr {
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    font-size: 2.4em;
+    width: 1.4em;
+    height: 1.4em;
+    margin:1px;
+    transition: box-shadow 150ms;
+    background-color: rgb(0, 0, 0, 0.25);
+    color: white;
+}
+
+#desc {
+    display: inline;
+    margin-left: 0.5em;
+    font-size: 2em;
+    color: #ffeba7;
+    text-shadow: 0px 0px 10px #ffffff;
+}
+
+#emu {
+    font-family: 'Consolas';
+    font-style: italic;
+    opacity: 0.5;
+    display: inline;
+    background: #d2d2d2;
+    font-size: 2em;
+    margin-right: 0.5em;
+    border-radius: 4px;
+    margin: 0;
+    padding: 1%;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin-right: 1%;
+    color: rgb(33, 33, 33);
+    font-weight: 690;
+    transition: all 420ms;
+}
+
+#emu:hover {
+    opacity: 1;
+    box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.727);
+}
+
+#emu.on {
+    opacity: 1;
+    box-shadow: 0 0 20px 0 rgb(164, 255, 182);
+    background: rgb(242, 255, 242);
+    color: rgb(0, 0, 0);
+}
+
+#emu.on:hover {
+    opacity: 0.5;
+    box-shadow: none;
+    background: white;
+}
+
+#kb {
+    background-image: url("clouds.jpg");
+    background-size: cover;
+}
+
+#select {
+    background-image: url("black.jpg");
+}
+
+#Shift {
+    width: 3em;
+    margin-left: 2em;
+}
+
+ltr.next {
+    background: rgba(123, 222, 96, 0.5);
+    box-shadow: 0px 0px 40px 0px rgb(78, 255, 78);
+    border-color: white;
+    border-style: dashed;
+    transition: border 200ms
+}
+
+ltr.on {
+    background: rgb(0, 0, 0);
+    color: white;
+    text-shadow: 0px 0px 20px rgb(255, 252, 206);
+}
+
+ltr:not(.next).on {
+    box-shadow: 0px 0px 20px 0px rgb(255, 255, 255);
+}
+
+#Shift.on {
+    box-shadow: 0px 0px 20px 0px rgb(255, 255, 255)
+}
+
+#q, #g, #k {
+    margin-right: 3em;
+}
+
+#d, #t, #m, #z, #f, #c, #i {
+    margin-right: 0.5em;
+}
+
+.r1, .r2, .r3 {
+    display: flex;
+    margin:0;
+    padding:0;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+}
+
+.words {
+    display: flex;
+    align-content: center;
+}
+
+#w1, #w2, #w3 {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5),5%,rgb(0, 0, 0));
+    margin-left: 5%;
+    font-size: 6.9em;
+    padding-left: 1.5%;
+    padding-right: 1.5%;
+    border-radius: 50px;
+}
+
+.words span {
+    color: white;
+    font-family: 'Consolas';
+    text-shadow: 0px 0px 20px rgb(129, 219, 255);
+}
+
+.words span.alt {
+    text-decoration: underline;
+    text-underline-offset: -90%;
+}
+
+.words span#err {
+    color: rgb(255, 200, 200);
+    text-shadow: 0px 0px 20px rgb(255, 0, 0);
+    /*
+    animation: linear forwards error 200ms;
+    */
+}
+
+@keyframes error {
+    from {
+        color: rgb(255, 200, 200);
+        text-shadow: 0px 0px 20px rgb(255, 0, 0);
+    }
+    to {
+    }
+}
+
+.words span.done {
+    color: rgba(255, 255, 255,0.5) !important;
+    text-shadow: 0px 0px 0px rgb(0, 0, 0) !important;
+}
+
+.tips {
+    background-image: url("black.jpg");
+    margin-bottom: 1%;
+    margin-right: 5%;
+    margin-left: 5%;
+    border-radius: 1000px;
+    padding-bottom: 0.5%;
+    padding-left: 2%;
+    color: white;
+    font-size: 3em;
+    text-shadow: 0px 0px 10px white;
+}
+
+.tips #let {
+    color: rgb(255, 215, 53);
+}
+
+#v::after,#s::after,#x::after { 
+    position: absolute;
+    white-space: pre-wrap;
+    content: "L5";
+    font-size: 50%;
+    color: tomato;
+    text-shadow: 0 0 10px tomato;
+    margin-top: 2.5em;
+    margin-left: -1em;
+}
+
+#i::after { 
+    position: absolute;
+    white-space: pre-wrap;
+    content: "R5";
+    font-size: 50%;
+    color: tomato;
+    text-shadow: 0 0 10px tomato;
+    margin-top: 2.5em;
+    margin-left: -1em;
+}
+
+#l::after,#r::after,#j::after { 
+    position: absolute;
+    white-space: pre-wrap;
+    content: "L4";
+    font-size: 50%;
+    color: orange;
+    text-shadow: 0 0 10px orange;
+    margin-top: 2.5em;
+    margin-left: -1em;
+}
+
+#u::after,#e::after { 
+    position: absolute;
+    white-space: pre-wrap;
+    content: "R4";
+    font-size: 50%;
+    color: orange;
+    text-shadow: 0 0 10px orange;
+    margin-top: 2.5em;
+    margin-left: -1em;
+}
+
+#h::after,#n::after,#b::after { 
+    position: absolute;
+    white-space: pre-wrap;
+    content: "L3";
+    font-size: 50%;
+    color: greenyellow;
+    text-shadow: 0 0 10px greenyellow;
+    margin-top: 2.5em;
+    margin-left: -1em;
+}
+
+#o::after,#a::after { 
+    position: absolute;
+    white-space: pre-wrap;
+    content: "R3";
+    font-size: 50%;
+    color: greenyellow;
+    text-shadow: 0 0 10px greenyellow;
+    margin-top: 2.5em;
+    margin-left: -1em;
+}
+
+#d::after,#t::after,#m::after,#q::after,#g::after,#k::after { 
+    position: absolute;
+    white-space: pre-wrap;
+    content: "L2";
+    font-size: 50%;
+    color: pink;
+    text-shadow: 0 0 10px pink;
+    margin-top: 2.5em;
+    margin-left: -1em;
+}
+
+
+#z::after,#f::after,#c::after,#w::after,#y::after,#p::after { 
+    position: absolute;
+    white-space: pre-wrap;
+    content: "R2";
+    font-size: 50%;
+    color: pink;
+    text-shadow: 0 0 10px pink;
+    margin-top: 2.5em;
+    margin-left: -1em;
+}

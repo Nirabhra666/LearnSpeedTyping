@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head>
+    <title>LST | Learn</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+</head>
+<body>
+    <div id="header">
+        <a href="javascript:side(7)"><img src="noncut.png"/></a>
+        <a>L e a r n S p e e d T y p i n g</a>
+    </div>
+    <ul id="topbar">
+        <li><a href="javascript:side(1)">Why</a></li>
+        <li><a href="javascript:side(2)">Alternate Layouts</a></li>
+        <li></li>
+        <li><a href="javascript:side(3)">Prerequisites</a></li>
+        <li><a href="javascript:side(4)">Guide</i></a></li>
+        <li><a href="javascript:side(5)" class="active">Learn</a></li>
+        <li></li>
+        <li><a href="javascript:side(6)">External Resources</a></li>
+        <li></li>
+        <li id="about"><a href="javascript:side(7)">About</a></li>
+    </ul>
+    <iframe src="req.html" class="mainframe"></iframe>
+    <script>
+        mainframe = null
+        function check(){
+            header = document.getElementById("header")
+            hh = header.offsetHeight
+            sidebar = document.getElementById("topbar")
+            sided = sidebar.offsetWidth
+            topd = sidebar.offsetHeight
+            mainframe = document.getElementsByClassName("mainframe")[0]
+            w = window.innerWidth-sided
+            mainframe.style.marginLeft = sided.toString()+"px"
+            mainframe.style.width = w.toString()+"px"
+            mainframe.style.height = (window.innerHeight-hh).toString().toString()+"px"
+            sidebar.style.height = (window.innerHeight-hh).toString().toString()+"px"
+            mainframe.focus()
+        }
+        window.addEventListener('mousewheel', check);
+        window.addEventListener('click', check);
+        window.addEventListener('load', check);
+        window.addEventListener('unload', check);
+        window.addEventListener('resize', check);
+        window.addEventListener('scroll', check);
+        elements = null
+        function getelements(){
+            elements = document.getElementById("topbar").getElementsByTagName("a")
+        }
+        window.addEventListener('load', getelements);
+        function side(a){
+            for(var i=0; i<elements.length; i++){
+                elements[i].setAttribute("class","inactive")
+            }
+            elements[a-1].setAttribute("class","active")
+            document.title = "LST"
+            switch(a){
+                case 1:
+                    mainframe.src="why.html"
+                    document.title += " | Learn"
+                    break;
+                case 2:
+                    mainframe.src="alt.html"
+                    document.title += " | Alt Layouts"
+                    break;
+                case 3:
+                    mainframe.src="req.html"
+                    document.title += " | Prerequisites"
+                    break;
+                case 4:
+                    mainframe.src="guide.html"
+                    document.title += " | Guide"
+                    break;
+                case 5:
+                    mainframe.src="learn.html"
+                    document.title += " | Learn"
+                    break;
+                case 6:
+                    mainframe.src="ext.html"
+                    document.title += " | External Resources"
+                    break;
+                case 7:
+                    mainframe.src="about.html"
+                    document.title += " | About"
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

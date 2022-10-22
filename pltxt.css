@@ -1,0 +1,141 @@
+body {
+    padding: 2%;
+    padding-top: 0;
+    padding-bottom: 0;
+    animation: fade 666ms ease-in-out
+}
+
+@keyframes fade {
+    from {
+        opacity: 0
+    }
+    to {
+        opacity: 1
+    }
+}
+
+h1 {
+    animation: hone 5s cubic-bezier(0.075, 0.82, 0.165, 1) infinite;
+}
+
+@keyframes hone {
+    0% {
+        text-shadow: 0 0 20px rgba(255, 142, 142, 0.75);
+    }
+    50% {
+        text-shadow: 0 0 69px rgb(89, 255, 158);
+    }
+    100% {
+        text-shadow: 0 0 20px rgba(255, 142, 142, 0.75);
+    }
+}
+
+fieldset {
+    border-radius: 1em;
+    border-style: dashed;
+    text-shadow: 0 0 10px rgba(50, 50, 50, 0.50);
+    font-size:x-large;
+}
+
+p {
+    margin: 0;
+    padding: 2%;
+    padding-top: 0;
+    text-shadow: none;
+}
+
+b {
+    font-size: larger;
+}
+  
+::-webkit-scrollbar {
+    width: 1em;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px 0 black, 0 0 10px 0 black; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(138, 255, 146); 
+    box-shadow: 0 0 20px 0 rgb(0, 255, 0), inset 0 0 10px 0 rgb(255, 255, 255);
+}
+
+img {
+    width: 100%;
+    animation: inout 5s cubic-bezier(1, 0.05, 0.795, 0.035) infinite
+}
+
+@keyframes inout {
+    0% {
+        -webkit-filter: drop-shadow(0 0 0 transparent);
+        filter: drop-shadow(0 0 0 transparent);
+    }
+    25% {
+        -webkit-filter: drop-shadow(10px 0 10px rgba(84, 255, 87, 0.42));
+        filter: drop-shadow(10px 0 10px rgba(84, 255, 87, 0.42));
+    }
+    50% {
+        -webkit-filter: drop-shadow(0 0 0 transparent);
+        filter: drop-shadow(0 0 0 transparent);
+    }
+    75% {
+        -webkit-filter: drop-shadow(-10px 0 10px rgba(255, 93, 244, 0.42));
+        filter: drop-shadow(-10px 0 10px rgba(255, 93, 244, 0.42));
+    }
+}
+
+img:hover {
+    -webkit-filter: drop-shadow(0px 0 10px rgb(118, 118, 118)) !important;
+    filter: drop-shadow(0px 0 10px rgb(118, 118, 118)) !important;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 5em;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.extraimp {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
+
+a {
+    color: rgb(98, 198, 98);
+    transition: text-shadow 420ms;
+    text-decoration: none;
+    font-size: larger;
+}
+
+a:hover {
+    text-shadow: 0 0 25px lime;
+    color: rgb(255, 255, 255);
+}
+
+#bc {
+    font: bold 2em 'Futura';
+}
+
+#contact {
+    font: bold 2em 'Futura';
+    background-color: rgb(42, 42, 42);
+    color: transparent;
+    text-shadow: 0px 0px 5px ivory;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+}
+
+#contact:hover {
+    color: white;
+    text-shadow: 0 0 15px rgba(255, 0, 0, 0.69);
+}
